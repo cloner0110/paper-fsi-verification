@@ -714,7 +714,7 @@ A zero normal gradient, which omits the acceleration term as well, is used on th
 \paragraph{Convection scheme.}
 Convection uses an unlimited blend of $75\%$ linear and $25\%$ linear-upwind interpolation (\texttt{LUST}), with the least-squares gradient.
 With the linear-upwind scheme every partitioned run on a coarse preliminary mesh of the same type ($4\times10^{4}$ cells) became unstable at $t \approx 5\,\mathrm{s}$: a spanwise oscillation of the tip grew until the flow solution diverged in the cells at the flap-tip corners. Tighter coupling and fluid tolerances, a halved time step, a different solid formulation and removing the viscous traction from the coupling did not change this, whereas first-order upwind convection was stable but lowered the tip deflection by $17\%$. With the blended scheme the same set-up runs from $t = 0$ to $45\,\mathrm{s}$ with bounded spanwise tip motion ($< 0.3\,\mathrm{mm}$) at about three coupling iterations per step.
-The linear-upwind extrapolation with an unlimited gradient is anti-diffusive where the gradient is poorly resolved, as at sharp corners, whereas the linear part of the blend neither adds nor removes kinetic energy; we take this as the likely reason, without having proved it.
+The linear-upwind extrapolation with an unlimited gradient is anti-diffusive where the gradient is poorly resolved, as at sharp corners, whereas the linear part of the blend adds no numerical diffusion; we take this as the likely reason, without having proved it.
 
 \paragraph{Fluid meshes.}
 The fluid meshes rF0, rF1 and rF2 are octree meshes generated with the \texttt{cartesianMesh} generator of cfMesh~\citep{Juretic2015cfMesh} from the published surface, with the flap edges captured as feature edges (Table~\ref{tab:hessenthaler_meshes}, Fig.~\ref{fig:hessenthaler_geom}b).
@@ -762,7 +762,7 @@ The same meshes are levels 1--3 of the companion paper~\citep{CardiffBatistic202
 	\end{tabular}
 \end{table}
 With the acceleration condition the tip deflection increases from $16.252\,\mathrm{mm}$ on rF0 to $16.553\,\mathrm{mm}$ on rF1 ($+0.301\,\mathrm{mm}$, $1.8\%$), and is \hl{[rF2 pending]} on rF2 (Table~\ref{tab:hessenthaler_results}).
-The zero gradient gives $16.305$, $16.661$ and $16.724\,\mathrm{mm}$; it raises the tip by $0.053\,\mathrm{mm}$ ($0.3\%$) on rF0 and $0.108\,\mathrm{mm}$ ($0.7\%$) on rF1, and by \hl{[rF2 pending]} on rF2. The interface pressure condition is thus a small effect against the change from rF0 to rF1, but larger than the zero-gradient change from rF1 to rF2.
+The zero gradient gives $16.305$, $16.661$ and $16.724\,\mathrm{mm}$; it raises the tip by $0.053\,\mathrm{mm}$ ($0.3\%$) on rF0 and $0.108\,\mathrm{mm}$ ($0.7\%$) on rF1, and by \hl{[rF2 pending]} on rF2. The interface pressure condition is thus a small effect against the change from rF0 to rF1, but on rF1 larger than the zero-gradient change from rF1 to rF2, although both are of the size of the window uncertainty below.
 On rF0 and rF1 the tip is not exactly steady: with either condition it wanders slowly by $0.1$--$0.2\,\mathrm{mm}$ peak to peak over $t = 25$--$45\,\mathrm{s}$, so a mean over $t = 40$--$45\,\mathrm{s}$ is uncertain by up to about $0.1\,\mathrm{mm}$. Only the zero-gradient solution on rF2 settles monotonically, to a standard deviation of $0.0002\,\mathrm{mm}$ over the window.
 
 The zero-gradient sequence changes by $+0.356$ and then $+0.063\,\mathrm{mm}$.
@@ -776,8 +776,8 @@ They differ from the primary partitioned solutions by $-0.28\,\mathrm{mm}$ on rF
 
 \paragraph{Coupling iterations.}
 IQN-ILS needs $4.66$ and $4.41$ coupling iterations per step over $t = 40$--$45\,\mathrm{s}$ on rF0 and rF1 with the acceleration condition (\hl{[rF2 pending]} on rF2), and $4.21$ and $4.61$ with the zero gradient.
-With the zero gradient on rF2, where the flap becomes steady, 441 steps from $t \approx 37\,\mathrm{s}$ reach the limit of 60 iterations, with the residual stalled at about $2\times10^{-4}$, and the mean over the window rises to $22.8$, while the tip changes by less than $10^{-4}\,\mathrm{mm}$.
-The measure $r_1$ is normalised by the largest residual of the step, which is small once the solution is steady, so the absolute residual reaches its round-off floor before $r_1$ reaches the tolerance; this is a property of a purely relative test at a true steady state rather than a loss of convergence, and is distinct from the unconverged steps accepted by the legacy test (Section~\ref{sec:iterative_errors}).
+With the zero gradient on rF2, where the flap becomes steady, 441 steps from $t \approx 37\,\mathrm{s}$ reach the limit of 60 iterations, with the residual stalled at about $2\times10^{-4}$, and the mean over the window rises to $22.8$, while the tip varies by only $5\times10^{-4}\,\mathrm{mm}$ over the window.
+The measure $r_1$ is normalised by the largest residual of the step, which is small once the solution is steady, so the absolute residual can reach its round-off floor before $r_1$ reaches the tolerance; we attribute the stall to this property of a purely relative test at a steady state rather than to a loss of convergence, although the absolute residuals have not been examined. It is distinct from the unconverged steps accepted by the legacy test (Section~\ref{sec:iterative_errors}).
 
 \paragraph{Validation, kept separate.}
 The measured steady tip deflection is $16.41\,\mathrm{mm}$, and the deformed centreline and the velocities on the planes $z = 10$ and $30\,\mathrm{mm}$ were also measured~\citep{Hessenthaler2017a}.
@@ -808,7 +808,7 @@ The velocity difference is the magnitude of the difference vector between the co
 
 With the acceleration condition the tip lies $0.16\,\mathrm{mm}$ below the measurement on rF0 and $0.14\,\mathrm{mm}$ above it on rF1 (\hl{[rF2 pending]} on rF2), the centreline deviates from the measured one by $0.188$ and $0.226\,\mathrm{mm}$ RMS, and the velocity by $5.18$ and $4.93\%$ (Table~\ref{tab:hessenthaler_validation}); the zero-gradient and quasi-monolithic solutions give $0.19$--$0.31\,\mathrm{mm}$ and $4.9$--$5.2\%$.
 With every condition and coupling, refinement moves the tip from below the measurement to above it, and with the zero gradient further away on rF2, so the agreement on any one mesh partly reflects discretisation error, and agreement on a coarse mesh is not evidence of accuracy.
-The velocity difference changes by at most $0.3\%$ between meshes; it is largest at the jet cores, where the measured velocities exceed the prescribed inflow and the measured plane flow rates exceed the pump rate by $8$--$10\%$~\citep{CardiffBatistic2026QM}.
+The velocity difference changes by at most $0.3\%$ of $630\,\mathrm{mm/s}$ between meshes; it is largest at the jet cores, where the measured velocities exceed the prescribed inflow and the measured plane flow rates exceed the pump rate by $8$--$10\%$~\citep{CardiffBatistic2026QM}.
 Without an experimental uncertainty, which is not available, a remaining discrepancy cannot be judged.
 
 %%-------------------------------------------------------------------

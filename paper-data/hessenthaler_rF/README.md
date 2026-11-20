@@ -61,5 +61,6 @@ interface band; strict checkMesh OK".
 - The tip of rF0 and rF1 wanders by 0.1-0.2 mm peak to peak over t = 25-45 s (both conditions);
   only zeroGradient rF2 settles monotonically.
 - zeroGradient rF2 reaches nOuterCorr = 60 in 441 steps from t = 36.9 s (residual about 2e-4
-  against 1e-4); the tip is steady to 1e-4 mm.
+  against 1e-4); over t = 40-45 s the tip has a standard deviation of 1.5e-4 mm and a range of
+  5.3e-4 mm. The absolute interface residuals were not examined.
 - Apparent order of the zeroGradient sequence (Celik form, r = 1.366, 1.387): 5.6.
