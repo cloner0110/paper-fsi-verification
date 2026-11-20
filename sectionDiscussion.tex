@@ -32,11 +32,10 @@ In the 3-D pressure-pulse tube, by contrast, the present Hookean solid and the S
 A code-to-code difference can be interpreted only where it exceeds the sum of both codes' numerical uncertainties and the quantified model-form contribution.
 
 \paragraph{Verification and validation.}
-\todo{The numbers in this paragraph come from the withdrawn chamfered-mesh campaign; update them from the feature-edge campaign (Section~\ref{sec:hessenthaler}) or remove the paragraph.}
 The Hessenthaler flap shows why the two are kept apart.
-Refinement moves the computed tip away from the measurement (from $-0.21\,\mathrm{mm}$ on the coarsest meshes to $+0.40\,\mathrm{mm}$ on the finest), so the close agreement of a coarse mesh is partly a cancellation of discretisation error (Section~\ref{sec:hessenthaler}).
-A validation statement made on that mesh would have credited the model with an accuracy that belonged to the discretisation error.
-Validation requires a verified solution with a stated numerical uncertainty and an experimental uncertainty; here the second is not available, and the first is complete except for the fluid convergence of the tip.
+Refinement moves the computed tip from below the measurement to above it (from $-0.16$ to $+0.14\,\mathrm{mm}$ from rF0 to rF1 with the acceleration interface condition, and from $-0.10$ to $+0.31\,\mathrm{mm}$ from rF0 to rF2 with the zero gradient), so the close agreement of any one mesh is partly a cancellation of discretisation error (Section~\ref{sec:hessenthaler}).
+A validation statement made on such a mesh would credit the model with an accuracy that belongs to the discretisation error.
+Validation requires a verified solution with a stated numerical uncertainty and an experimental uncertainty; here the second is not available, and the first is not either, because the fluid-mesh sequence of the tip is not shown to be in the asymptotic range.
 
 \paragraph{Limits of the suite.}
 The suite covers incompressible, laminar, Newtonian flows coupled to elastic solids through a sharp interface, conforming or non-conforming.

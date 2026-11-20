@@ -1,0 +1,13 @@
+# Hessenthaler Phase I, partitioned IQN-ILS (Sonic) vs MRI; hv_analysis.py @ paper-monolithic-fsi b80d572;
+# tip u_y in mm; line_* = mean centreline (t=40-45) minus MRI, mm; vel_d = mean voxel |dU| / 630 mm/s;
+# its = coupling (P) or Newton (QM_B) iterations/step. QM_B rows: agent B's values (board comment 7037492192).
+bc,mesh,run_dir,t_end,tip_mean_40_45,tip_min_40_45,tip_max_40_45,tip_std_40_45,tip_mean_20_25,tip_mean_5_10,tip_drift_40_45_minus_20_25,line_rms_mm,line_max_mm,line_mean_mm,vel_d_mean,vel_d_z10,vel_d_z30,vel_rms_vx_mm_s,vel_rms_vy_mm_s,vel_rms_vz_mm_s,voxels_valid,its_window,its_all,its_max
+mwp,rF0,P_rF0_LUST_b02_mwp,45,16.252,16.229,16.279,0.016251,16.253,16.228,-0.00089572,0.18844,0.53426,-0.032412,0.05176,0.058371,0.047132,4.7786,4.0206,49.615,272,4.6569,4.6868,10
+mwp,rF1,P_rF1_LUST_b02_mwp,45,16.553,16.514,16.6,0.02538,16.603,16.56,-0.050059,0.22606,0.55843,0.087953,0.049259,0.057942,0.043255,3.6355,2.8745,47.989,274,4.4066,4.1861,10
+mwp,rF2,"P_rF2_LUST_b02_mwp (partial, snapshot t=33.574)",33.574,,,,,16.696,16.53,,,,,,,,,,,,,4.2486,11
+zg,rF0,P_rF0_LUST_b02,45,16.305,16.281,16.316,0.0099019,16.208,16.211,0.097193,0.18643,0.54592,-0.0026313,0.050561,0.057523,0.045687,3.7442,3.6312,49.31,272,4.2115,4.3547,10
+zg,rF1,P_rF1_LUST_b02,45,16.661,16.635,16.675,0.011112,16.611,16.548,0.050113,0.27508,0.59204,0.15377,0.049204,0.057327,0.043518,3.3593,2.2927,48.301,272,4.6094,4.1573,10
+zg,rF2,P_rF2_LUST_b02,45,16.724,16.724,16.724,0.0001529,16.685,16.53,0.039191,0.30648,0.63459,0.18863,0.049555,0.057309,0.044127,3.5611,2.2137,47.921,272,22.83,6.6856,60
+QM_B,rF0,"QM (agent B, MeluXina)",45,15.97,15.86,16.05,,,,,0.27,,,0.052,,,,,,,2,,
+QM_B,rF1,"QM (agent B, MeluXina)",45,16.62,16.62,16.62,,,,,0.27,,,0.05,,,,,,,1,,
+QM_B,rF2,"QM (agent B, MeluXina)",45,16.64,16.64,16.64,,,,,0.28,,,0.049,,,,,,,1,,
