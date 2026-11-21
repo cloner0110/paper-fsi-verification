@@ -269,7 +269,7 @@ Limitations: the wall is untethered, unlike Womersley's constrained tube, the hi
 % Source: paper-data/mms_fsi/ (README.md there gives the provenance of every
 % number in this subsection).
 
-\todo{Figure to be produced: geometry with the exact interface at $t = 0.2$ and $0.4$ (full and flat variants), and the partitioned pressure-error field on the finest mesh, showing the outlet--bottom-wall corner. The derivation script and the case generator are not yet in the repository (Appendix~\ref{app:mms}); the case is not yet part of the released solids4foam suite. Sections~\ref{sec:cross_convergence} and~\ref{sec:defects} do not yet include this case.}
+\todo{The derivation script and the case generator are not yet in the repository (Appendix~\ref{app:mms}); the case is not yet part of the released solids4foam suite. Sections~\ref{sec:cross_convergence} and~\ref{sec:defects} do not yet include this case.}
 
 \paragraph{Role.}
 The ring and the Womersley tube are linear: their interfaces move by $\approx5\times10^{-4}$ of the radius, the fluid mesh barely deforms and the solid is small-strain, so they cannot test the mesh motion, the moving-boundary treatment or a finite-strain solid against an exact solution.
@@ -290,6 +290,17 @@ In the \emph{full} variant the interface rises and falls by up to $0.15H$ as a p
 The fluid carries a pulsatile through-flow with a travelling vortex train, with a peak speed of about $2.1$ and a Reynolds number of about 200 based on the channel height.
 In the \emph{flat} variant the interface stays flat and moves only vertically, so the ALE mesh stays orthogonal; the pair of variants separates the effect of boundary non-orthogonality from the rest of the discretisation.
 The manufactured sources are of the size of the physical terms (fluid $|\bb{f}| \approx 10$ against $|\partial\bb{v}/\partial t| \approx 9$ and $|\nabla p| \approx 8$), and the errors are measured at $t = 0.2$ and $0.4$.
+
+\begin{figure}[htbp]
+	\centering
+	% Source: paper-data/mms_fsi/figure/mms_fsi_figure.py with the exact
+	% evaluators case/evalExact and case/evalExactFlat, and the runs
+	% mms-pfv/base/aitken-n128 and mms-fsi/case/runs/qm-full/n128 at time 0.4
+	% (see paper-data/mms_fsi/README.md); fields were written only at t = 0.4.
+	\includegraphics[width=\textwidth]{figures/mms_fsi_interface_and_pressure_error}
+	\caption{Manufactured FSI solution. (a) Fluid and solid domains in the reference configuration ($t = 0$), and the exact interface $y = 1 + \eta(x,t)$ at $t = 0.2$ and $0.4$ for the full variant (solid lines: tilting, travelling interface) and the flat variant (dashed lines: vertical motion only); on the right, the interface with the vertical scale enlarged. (b, c) Fluid pressure error $p - p_\mathrm{ex}$ at the cell centres at $t = 0.4$, full variant, $n = 128$ ($128\times64$ fluid cells, $\Delta t = 0.0025$), on the deformed mesh and with one colour scale: (b) partitioned Dirichlet--Neumann coupling with Aitken relaxation; (c) quasi-monolithic coupling. Nondimensional units.}
+	\label{fig:mms_fsi}
+\end{figure}
 
 \paragraph{Construction.}
 The solution is built from the solid to the fluid (Appendix~\ref{app:mms}).
@@ -363,6 +374,7 @@ Aitken needs $26$, $48$, $72$ and $73$ coupling iterations per step on the four 
 
 \paragraph{Partitioned fluid pressure.}
 The pressure of the partitioned fluid converges at first order, and the largest velocity and pressure errors lie in the corner where the outlet meets the bottom wall; there a fixed pressure and an exact velocity gradient meet a no-slip wall with a flux-consistent pressure gradient.
+On $n = 128$ at $t = 0.4$ the partitioned pressure error is largest in the cells next to the outlet, positive in its lower half and negative in its upper half, with a maximum of $7.1\times10^{-2}$ against $3.1\times10^{-3}$ for the quasi-monolithic coupling (Fig.~\ref{fig:mms_fsi}).
 The velocity maximum norm converges at orders of only $0.4$--$1.2$ and the pressure maximum norm at $0.5$--$0.7$.
 The behaviour is the same for both couplings, and is therefore a property of the fluid discretisation and its boundary treatment, not of the coupling.
 Three changes to the Aitken calculation, made one at a time, were tested from $n = 16$ to $64$: a skew-corrected interpolation of the face flux in the pressure equation, which raises the order of the interface traction from $n = 32$ to $64$ from $1.41$ to $1.61$; with it, a moving-wall pressure condition on the interface; and with it, the exact pressure gradient on the bottom wall. None of them changes the orders of the fluid velocity and pressure (from $n = 32$ to $64$: $1.29$--$1.31$ and $0.90$--$1.04$), so the cause lies elsewhere.
