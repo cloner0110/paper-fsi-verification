@@ -227,7 +227,7 @@ Several directions remain:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \bmhead{Data Availability}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\hl{CHECK}
+\hl{[Philip: check this statement once the release tag and archive exist]}
 The solids4foam toolbox is publicly available at \url{https://github.com/solids4foam/solids4foam}; the benchmark cases, their verification drivers (\texttt{Allverify}), the machine-readable reference files and the analysis scripts are in the \texttt{tutorials/fluidSolidInteraction} directories of that repository. \todo{Give the release tag or commit and the Zenodo DOI of the archived case set-ups, drivers, raw outputs and reference files; several verification branches (3dTube, Hron--Turek diagnostics, Hessenthaler) are not yet merged.}
 
 
@@ -252,7 +252,7 @@ The authors wish to acknowledge the Irish Centre for High-End Computing (ICHEC) 
 \textbf{Sairam Pamulaparthi Venkata:} Investigation, Software (FEBio models), Validation (independent FEBio solutions of the ring added-mass problem), Formal analysis, Writing -- review \& editing.
 \textbf{Seevani Bali:} Investigation, Software (preCICE--CalculiX models), Validation (third-platform replication of the 3-D pressure-pulse tube mesh study; preCICE--CalculiX solution of Hron--Turek FSI1), Writing -- review \& editing \hl{TBD: confirm}.
 \textbf{Amirhossein Taran:} Investigation, Software (Kratos models), Validation (independent Kratos solution of the lid-driven cavity), Writing -- review \& editing \hl{TBD: confirm}.
-\textbf{Dylan Armfield:} Investigation, Software (preCICE--SU2--CalculiX models), Validation (independent SU2--CalculiX solution of Hron--Turek FSI1), Writing -- review \& editing.
+\textbf{Dylan Armfield:} Investigation, Software (preCICE--SU2--CalculiX models), Validation (independent SU2--CalculiX solutions of Hron--Turek FSI1, the ring added-mass problem and the flexible-bottom cavity), Writing -- review \& editing.
 \textbf{Ivan Batisti\'{c}:} Software (high-order solid discretisation), Writing -- review \& editing \hl{TBD: confirm}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -278,7 +278,7 @@ After using these tools, the authors reviewed and edited the content as needed a
 \section{Supplementary material: the beam in cross-flow and its published inflow}
 \label{app:beam}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\todo{Before submission: the runs used a build without the fixes of solids4foam PR \#546 (\texttt{-O2}, so the aliasing defect does not apply); an A/B check of the interface point transfer on level 1 is needed.}
+\todo{Pending result, before submission: the runs used a build without the fixes of solids4foam PR \#546 (\texttt{-O2}, so the aliasing defect does not apply); an A/B check of the interface point transfer on level 1 is needed.}
 
 \citet{Richter2012} (Section~6.2; Section~7.2 of the preprint) defines a steady three-dimensional benchmark: a duct $(0,1.5)\times(0,0.4)\times(-0.4,0.4)\,\mathrm{m}$ with a St Venant--Kirchhoff plate $(0.4,0.5)\times(0,0.2)\times(-0.2,0.2)\,\mathrm{m}$ clamped to its floor ($E_S = 1.4\,\mathrm{MPa}$, $\nu_S = 0.4$), fluid density $1000\,\mathrm{kg/m^3}$ and kinematic viscosity $10^{-3}\,\mathrm{m^2/s}$, and a bi-parabolic inlet profile. The quantities of interest are the streamwise displacement $u_x$ at point A $= (0.45, 0.15, -0.15)\,\mathrm{m}$ and the drag $F_x$ on the plate. The published reference values, $u_x(A) = 5.95\times10^{-5}\,\mathrm{m}$ and $F_x = 1.33\,\mathrm{N}$ with a stated accuracy of $1\%$ ($5.924\times10^{-5}\pm10^{-7}\,\mathrm{m}$ and $1.327\pm0.01\,\mathrm{N}$ in the preprint), are extrapolated from the finest three of five uniformly refined levels, whose displacements converge cleanly ($4.93$, $5.57$, $5.85$, $5.908$ and $5.920\times10^{-5}\,\mathrm{m}$); they are often attributed to \citet{Richter2015} \citep[e.g.][]{Aulisa2018}.
 
