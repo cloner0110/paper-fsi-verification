@@ -44,6 +44,7 @@ This folder supports Section "Manufactured solution for transient ALE FSI with a
 | `checks/*.derive.log` | output of the derivation: the 11 symbolic and 40-digit checks (full, flat, and ρ_F = 2, ρ_S = 3) | `derive/run_checks.sh` |
 | `checks/*.check.log` | output of the independent checks of the generated C++ | `derive/check_generated.C` |
 | `make_csv.py` | the script that wrote the CSV files (absolute paths of the run directories inside) | |
+| `figure/mms_fsi_figure.py` | Fig. `fig:mms_fsi` (`figures/mms_fsi_interface_and_pressure_error.pdf`): domains and exact interface (both variants), and the pressure error p − p_exact at t = 0.4 on n128 for Aitken and QM. Run with the venv of `claude-runs/mms-fsi/`: `mms_fsi_figure.py case/evalExact case/evalExactFlat mms-pfv/base/aitken-n128 mms-fsi/case/runs/qm-full/n128 OUT.pdf`. The runs wrote fields only at t = 0.4 | reads the `pError` field of the error function object and the deformed fluid mesh |
 
 **`source_tables/`:**
 
