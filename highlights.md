@@ -1,3 +1,12 @@
+<!-- Proposed five-bullet version, for Philip to accept or reject (nothing below is deleted).
+     Merges bullets 1 and 5, the two closest (both describe the open, executable suite).
+     - Open, re-executable FSI verification suite with graded reference quality
+     - Spatial, temporal and iterative error evidence assessed per case, gaps stated
+     - Closed-form manufactured solution for ALE FSI with a finite-strain solid
+     - Hron-Turek FSI3 displacements are not in the asymptotic range on four mesh levels
+     - A common coupling convergence test accepts unconverged steps and causes drift
+     The FSI3 bullet still depends on the ring+box family (see its note below). -->
+
 # Highlights (Elsevier: 3-5 bullets, at most 85 characters each)
 
 <!-- Draft for J. Fluids and Structures; check against the final results before submission. -->
