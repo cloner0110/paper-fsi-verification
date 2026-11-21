@@ -7,3 +7,5 @@
 - Hron-Turek FSI3 displacements are not in the asymptotic range on four mesh levels
 - A common coupling convergence test accepts unconverged steps and causes drift
 - Drivers and machine-readable references released for re-executable verification
+- Closed-form manufactured solution for ALE FSI with a finite-strain solid
+<!-- Six bullets: choose five before submission (limit 3-5). -->

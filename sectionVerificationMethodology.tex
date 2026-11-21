@@ -4,7 +4,7 @@
 % Evidence base: paper-data/benchmark_inventory.md, paper-data/benchmarks.yaml
 % and the verification/ directories of the solids4foam development branch.
 
-Code verification asks whether the discrete equations are solved correctly and whether the discretisation error vanishes at the expected rate; it does not ask whether the governing equations describe a physical system~\citep{Roache1998, Roy2005, Oberkampf2008, Oberkampf2010}. Exact solutions can be manufactured for any set of equations~\citep{Roache2002}; this paper instead uses exact solutions of physical problems and independent numerical references.
+Code verification asks whether the discrete equations are solved correctly and whether the discretisation error vanishes at the expected rate; it does not ask whether the governing equations describe a physical system~\citep{Roache1998, Roy2005, Oberkampf2008, Oberkampf2010}. Exact solutions can be manufactured for any set of equations~\citep{Roache2002}; this paper mainly uses exact solutions of physical problems and independent numerical references, and adds one manufactured solution for the coupled problem at finite deformation (Section~\ref{sec:mms_fsi}).
 For a coupled fluid--structure interaction (FSI) calculation it is useful to think of the difference between a computed quantity $f$ and the exact solution $f_\mathrm{exact}$ of the stated mathematical problem in terms of three dominant sources,
 \begin{equation}
 	f - f_\mathrm{exact} \approx \varepsilon_h + \varepsilon_{\Delta t} + \varepsilon_\mathrm{it},
@@ -40,7 +40,7 @@ The category describes the reference, not the benchmark problem and not the qual
 		\toprule
 		Category & Definition & Cases \\
 		\midrule
-		A & Analytical or semi-analytical solution of the stated continuum problem, with any numerical error of its own (e.g.\ collocation) controlled to near round-off. & ring added-mass problem, Womersley tube \\
+		A & Analytical or semi-analytical solution of the stated continuum problem, with any numerical error of its own (e.g.\ collocation) controlled to near round-off. & ring added-mass problem, Womersley tube, manufactured FSI solution \\
 		B & Independently computed numerical solution, by a different code and with its own convergence evidence, either of the same problem or of a problem with a small, explicitly identified model-form difference whose effect on the QoIs is quantified and small compared with the numerical errors of interest. & Hron--Turek FSI1 (Featflow, six levels; and a solution with an independent solid code, preCICE--CalculiX); Hron--Turek FSI3 (\citet{Failer2020}, six levels); collapsible channel (oomph-lib, beam wall model); Mok lid-driven cavity (Kratos, group-B definition, outlet condition) \\
 		C & Published benchmark value whose own discretisation error is only partly quantified. & Hron--Turek FSI2 (Featflow level 4); beam in cross-flow (\citet{Richter2012}, corrected inflow) \\
 		C-weak & As C, but digitised from figures, single-mesh, mutually inconsistent, preprint-only, or from the same code lineage as the code under test. & 3-D pressure-pulse tube, flexible-bottom cavity, blob in treacle \\

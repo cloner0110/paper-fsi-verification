@@ -1,0 +1,36 @@
+[    0.1s] kinematics built
+[    0.1s] solid stress built
+[    0.1s] area/Q built
+[    0.2s] Phi_trac solved
+[    0.4s] velocity built
+[    0.4s] pressure built
+[    0.4s] fluid source built
+[    0.4s] solid source built
+[PASS] closed-form inverse Xi(xG(X,t),t) = X (symbolic) 0
+[PASS] div curl(psi) = 0 (symbolic, generic psi) 
+  point 0: kin 1.7e-38 trac 1.1e-39 |t_s| 2.644e+00
+  point 1: kin 1.7e-38 trac 1.1e-39 |t_s| 2.271e-01
+  point 2: kin 1.7e-38 trac 1.1e-39 |t_s| 4.342e-03
+  point 3: kin 1.7e-38 trac 1.1e-39 |t_s| 3.035e-02
+  point 4: kin 1.7e-38 trac 1.1e-39 |t_s| 1.978e-01
+  point 5: kin 2.7e-38 trac 1.8e-39 |t_s| 2.770e+00
+  point 6: kin 2.7e-38 trac 1.8e-39 |t_s| 2.294e-02
+  point 7: kin 2.7e-38 trac 1.8e-39 |t_s| 2.673e+00
+[PASS] fluid domain top = deformed interface, h(xG) = yG max 0.0e+00
+[PASS] div v = 0 at 40 digits (8 random points) max 3.7e-40
+[PASS] kinematic v_f(xG,yG) = du/dt(X,H) (40 digits) max 2.7e-38
+[PASS] no-slip at y = 0 (40 digits) max 0.0e+00
+[PASS] traction sigma_f n = sigma_s n (40 digits) max 1.8e-39
+[PASS] solid interface shear traction = 0 when e_sh = 0 (40 digits) max 0.0e+00
+  interface |shear traction| <= 7.021e-02, |normal traction| <= 2.404e+00 (sampled)
+[PASS] Phi coefficient c1 = 2 mu (1 + h_x^2)/h^2 (40 digits) max 0.0e+00
+[PASS] solid clamped on Y=H+T max 0.0e+00
+[PASS] zero initial state u = u_t = v = p = 0 at t = 0 max 2.4e-40
+checks done
+[    0.5s] reference values written
+[    0.5s]   fluid: 219 temporaries
+[    0.5s]   channelHeight: 1 temporaries
+[    0.5s]   solid: 92 temporaries
+[    0.5s]   interface: 9 temporaries
+[    0.5s] code generated
+11/11 checks passed
