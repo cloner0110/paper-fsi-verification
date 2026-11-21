@@ -41,6 +41,8 @@ The solver paper (paper-monolithic-fsi) keeps a matching register for the quasi-
 | 14 | Units of the interface-displacement log line | output | misread as metres | Open |
 | 15 | Benchmark definitions in tutorials | tutorials | wrong reference comparison | Open |
 | 16 | Steady state depends on the pseudo-time step | partitioned fluid | up to 0.2 % on coarse meshes | Open |
+| 17 | Boundary non-orthogonal correction is zero on OpenFOAM.com | moving-wall and other BCs | viscous traction error on skewed wall cells | Issue filed (#748) |
+| 18 | First-order pressure in `pimpleFluid` on a manufactured FSI solution | partitioned fluid | p order ~1, outlet–wall corner error | Issue filed (#750) |
 
 ## Entries
 
@@ -191,3 +193,28 @@ Set-up details that cost time because the tutorial or its reference did not say 
 - **Right choice:** in a steady study, state Δt per level and check one level at a second Δt. On coarse meshes, a "steady" result is not Δt-independent.
 - **State:** Open (practice).
 - **Robust fix to consider:** a note in the steady FSI tutorials' READMEs. Longer term, a Δt-independent Rhie–Chow coefficient for pseudo-transient steady runs (as in steady SIMPLE), or a steady fluid model for steady FSI.
+
+### 17. Boundary non-orthogonal correction is zero on OpenFOAM.com
+
+- **Found:** 2026-11-21, by solver-paper agent B on the manufactured-solution FSI case (solver-paper register entries 28–32).
+- **What goes wrong:** several conditions build their correction vector as k = (I − nn)·`patch().delta()`:
+  - the moving-wall and interface velocity conditions, `newMovingWallVelocity` and `elasticWallVelocity`;
+  - the inlet profiles;
+  - `solidSymmetry`, `normalDisplacement`, `tractionPressureDisplacement` and `fixedTemperature`.
+
+  On OpenFOAM.com, `fvPatch::delta()` is purely normal for non-coupled patches, so k ≡ 0 and the correction does nothing. On foam-extend it does correct, so the forks differ on skewed wall cells.
+- **Effect:** an uncorrected wall-normal velocity gradient gives a viscous-traction error of about ν tanθ |∂U/∂τ|, which does not vanish under refinement if the wall angle θ does not. Where it matters:
+  - it is zero where the wall velocity does not vary along the wall, e.g. at a steady state (cavity, Hessenthaler);
+  - it is small where the near-wall cells are orthogonal;
+  - it is largest on skewed near-wall cells of a deforming wall: FSI3 around the flag, the collapsible channel.
+- **Right choice:** `patchCorrectionVectors(patch())`, as `fixedDisplacement`, `solidTraction` and `fixedGradientCorrected` already use.
+- **State:** Issue filed: solids4foam#748. Once a fix exists, run an A/B on the transient partitioned cases with non-orthogonal wall cells, FSI3 and the collapsible channel first.
+- **Robust fix to consider:** the #748 fix, plus a unit test that the correction is non-zero on a skewed patch on both forks.
+
+### 18. First-order pressure in `pimpleFluid` on a manufactured FSI solution
+
+- **Found:** 2026-11-21, manufactured-solution FSI case (solver-paper agent B).
+- **What goes wrong:** with the partitioned couplings, fluid p converges at about first order over the whole domain. Fluid U converges at about 1.3, and there is an outlet–bottom-wall corner error with an L∞ order of 0.4–0.8. Meanwhile the solid is second order, and the quasi-monolithic fluid gives a pressure order of 1.7–2.1 on the same meshes.
+- **Ruled out (2026-11-21, `/Users/philipc/claude-runs/mms-pfv`):** skew-corrected continuity flux (entry 1), `movingWallPressure` on the interface (entry 3), and the exact pressure gradient on the bottom wall. Each changes the fluid orders by at most 0.1.
+- **State:** Issue filed: solids4foam#750. Diagnostic variants are requested: fluid only with prescribed interface motion, and an outlet without the corner clash.
+- **Robust fix to consider:** depends on the cause.
