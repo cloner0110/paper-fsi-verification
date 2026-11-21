@@ -7,7 +7,7 @@
 No single benchmark verifies a continuum FSI code, and in the present suite the most widely used benchmarks are not the most discriminating.
 We therefore propose a tiered suite (Table~\ref{tab:suite_tiers}), with membership determined by complementary challenges, reference quality, cost, and suitability for routine versus high-end use.
 
-\todo{Hessenthaler status in this table: update when the feature-edge campaign (feF1--feF3) finishes.}
+\todo{Hessenthaler status in this table: update when the rF2 solution with the acceleration interface condition finishes.}
 \begin{table}[htbp]
 	\centering
 	\footnotesize
@@ -28,7 +28,7 @@ We therefore propose a tiered suite (Table~\ref{tab:suite_tiers}), with membersh
 		Hron--Turek FSI2, FSI3 & C (FSI2), B (FSI3) & self-excited oscillation; lift amplitude; tolerance sensitivity; mesh-motion history; set-up-induced sub-nominal order & FSI3 three levels (tutorial set-up) and four (corrected set-up); FSI2 two levels \\
 		3dTube & C-weak & 3-D wave propagation with added mass; time-discretisation sensitivity; cross-platform and toolchain checks & three levels; $u_{r,\max}$ not yet converging \\
 		beamInCrossFlow$^\ast$ & C & 3-D steady external flow; displacement and force convergence & four levels, corrected inflow; orders rising to 1.6 (Appendix~\ref{app:beam}) \\
-		Hessenthaler$^\ast$ & -- & realistic 3-D geometry, large deformation; steady-state iterative error; validation data kept separate & solid, $\Delta t$ and coupling converged; fluid convergence open \\
+		Hessenthaler$^\ast$ & C & realistic 3-D geometry, large deformation; steady-state iterative error; validation data kept separate & three fluid levels, not shown to be asymptotic (mesh sensitivity only); \hl{finest level running} \\
 		mokLidDrivenCavity & B & tension-dominated membrane; problem-definition sensitivity; coupling robustness & four levels, combined refinement; orders below nominal; within $\approx1\%$ of Kratos; $128^2$ needs relaxed outer correctors \\
 		cavityFlexibleBottom$^\ast$ & C-weak & steady internal flow, large deformation & provisional \\
 		blobInTreacle$^\ast$ & C-weak & temporal and spatial order in viscous large-deformation flow; interface force balance & four levels and four time steps at near-nominal orders; same-group second implementation; provisional \\

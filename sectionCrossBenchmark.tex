@@ -3,8 +3,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Synthesis of Section 5. All values are repeated from Section 5 / the
 % evidence inventory / paper-data evidence reports, except the Hessenthaler
-% convergence-test evidence (Section iterative_errors), which has no Section-5
-% counterpart because that case has no convergence results yet.
+% convergence-test evidence (Section iterative_errors), which comes from a
+% preliminary calculation on a different fluid mesh and has no Section-5 counterpart.
 
 \todo{Synthesis based on the evidence available on 2026-10-10. Conclusions will change when: (a) the Hessenthaler verification campaign is completed and the author of the beamInCrossFlow benchmark confirms the corrected inflow; (b) independent references become available (3dTube first; mokLidDrivenCavity now has one, Kratos); (c) a locally refined Hron--Turek replay confirms or refutes the pre-asymptotic vortical-loading explanation (the geometric-singularity hypothesis was rejected).}
 
@@ -145,7 +145,7 @@ Elsewhere, the iterative error is bounded only indirectly.
 \end{table}
 
 \emph{A converged-looking QoI can carry an accumulated coupling error.}
-In the verification campaign for the Hessenthaler flap (Section~\ref{sec:hessenthaler}; OpenFOAM-v2412, IQN-ILS, tolerance $10^{-4}$, $\Delta t = 0.002\,\mathrm{s}$, 40\,000 steps to $t = 80\,\mathrm{s}$), the legacy test $\min(r_1, r_2)$ of Eq.~\eqref{eq:coupling_residuals} accepted steps after about three iterations once the flow had become quasi-steady, because $r_2$, normalised by the total tip deflection of $\approx17\,\mathrm{mm}$, was small (median $3.5\times10^{-5}$) whatever the reduction within the step.
+In a preliminary calculation of the Hessenthaler flap on a different fluid mesh from those of Section~\ref{sec:hessenthaler} (OpenFOAM-v2412, IQN-ILS, tolerance $10^{-4}$, $\Delta t = 0.002\,\mathrm{s}$, 40\,000 steps to $t = 80\,\mathrm{s}$), the legacy test $\min(r_1, r_2)$ of Eq.~\eqref{eq:coupling_residuals} accepted steps after about three iterations once the flow had become quasi-steady, because $r_2$, normalised by the total tip deflection of $\approx17\,\mathrm{mm}$, was small (median $3.5\times10^{-5}$) whatever the reduction within the step.
 After $t = 1\,\mathrm{s}$ every step was accepted with $r_1 > 10^{-4}$ (median $\approx6.8\times10^{-2}$; $87$--$91\%$ of steps with $r_1 > 10^{-2}$), the fluid interface lagged the solid by $\approx0.03\,\mathrm{mm}$, and the flap tip crept upwards at $+0.003$--$0.005\,\mathrm{mm/s}$ ($16.84$, $16.90$ and $16.98\,\mathrm{mm}$ at $t = 30$, $60$ and $80\,\mathrm{s}$), by more than the spatial differences under study.
 Neither the fluid nor the solid alone drifted.
 Restarted from the $80\,\mathrm{s}$ state with the strict test $\max(r_1, r_2)$ (10--11 iterations per step), the tip settled within $\approx0.3\,\mathrm{s}$ to a plateau of $17.0195\,\mathrm{mm}$, flat to $\pm0.0002\,\mathrm{mm}$ over $7.5\,\mathrm{s}$.
@@ -235,7 +235,6 @@ Disagreements between codes can originate in the discretisation of the reference
 \subsection{Cost and dimensionality}\label{sec:cost}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\todo{Hessenthaler cost row and the cost sentence below: chamfered-mesh campaign (withdrawn); replace with the feature-edge feF3 cost.}
 \begin{table}[htbp]
 	\centering
 	\footnotesize
@@ -257,12 +256,12 @@ Disagreements between codes can originate in the discretisation of the reference
 		Flexible-bottom cavity$^\ast$ & three-level sweep $\approx10$\,min serial \\
 		Beam in cross-flow$^\ast$ & level 3 ($4.2\times10^{6}$ fluid cells) $\approx45$ node-hours on 128-core nodes; both inflows to level 3 with checks $158$ node-hours ($2.0\times10^{4}$ core-hours) \\
 		Blob in treacle$^\ast$ & full study $\approx40$\,min \\
-		Hessenthaler flap$^\ast$ & strict test from $t=0$ to steady state: F3S2 ($1.5\times10^{6}$ fluid cells) $\approx145$\,h on 256 ranks ($\approx3.7\times10^{4}$ core-hours); F4S2 ($4.2\times10^{6}$ cells) estimated $\approx10^{5}$ core-hours \\
+		Hessenthaler flap$^\ast$ & strict test from $t = 0$ to $45\,\mathrm{s}$, single nodes: rF0 ($1.2\times10^{5}$ fluid cells) 14\,h and rF1 ($3.1\times10^{5}$) 8--19\,h on 24 ranks ($2$--$4.5\times10^{2}$ core-hours); rF2 ($8.3\times10^{5}$, zero-gradient interface pressure) 37\,h on 48 ranks ($1.8\times10^{3}$ core-hours), including the steps at the iteration limit \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-Cost rises by roughly four orders of magnitude from the exact-reference problems to the finest three-dimensional calculations (Table~\ref{tab:cost}), and the completeness of the evidence falls in the opposite direction: the inexpensive two-dimensional and axisymmetric problems have three or more levels in space and time and exact or independent references, whereas the three-dimensional problems have three levels with sub-nominal or undefined orders (3-D pressure-pulse tube) or a published definition that had to be corrected (beam in cross-flow); for the Hessenthaler flap a single strict-test run on the third fluid level costs $\approx3.7\times10^{4}$ core-hours, and the fluid convergence of its principal QoI is still open. Even in two dimensions a third level can cost an order of magnitude more than the second (Hron--Turek FSI3: 40.8\,h on 32 ranks at 4x, without further strong scaling).
+Cost rises by roughly four orders of magnitude from the exact-reference problems to the finest three-dimensional calculations (Table~\ref{tab:cost}), and the completeness of the evidence falls in the opposite direction: the inexpensive two-dimensional and axisymmetric problems have three or more levels in space and time and exact or independent references, whereas the three-dimensional problems have three levels with sub-nominal or undefined orders (3-D pressure-pulse tube) or a published definition that had to be corrected (beam in cross-flow); for the Hessenthaler flap a strict-test run on the third fluid level costs $\approx1.8\times10^{3}$ core-hours, and the fluid convergence of its principal QoI is still open. Even in two dimensions a third level can cost an order of magnitude more than the second (Hron--Turek FSI3: 40.8\,h on 32 ranks at 4x, without further strong scaling).
 This illustrates one practical reason why rigorous convergence evidence becomes scarcer as geometric and computational complexity increase, and it motivates a tiered suite (Section~\ref{sec:recommended_suite}).
 Which error source dominates is case dependent: in the thin-walled two-dimensional collapsible channel the solid discretisation can dominate ($17.4\%$ versus $0.44\%$ for linear versus cubic solid), whereas in Hron--Turek FSI3 refining the solid alone accounts for only $\approx5\%$ of the change in the $u_y$ amplitude but for more than half of the change in the force amplitudes.
 \emph{An independent code.}

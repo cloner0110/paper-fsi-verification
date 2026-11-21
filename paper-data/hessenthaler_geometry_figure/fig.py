@@ -7,8 +7,8 @@ plt.rcParams.update({"font.size": 8, "font.family": "serif",
                      "mathtext.fontset": "cm", "axes.linewidth": 0.6})
 sec = np.load("section_x0.npz")
 
-# Mid-plane slice of the feF1 fluid mesh (legacy VTK polydata)
-L = open("feF1_x0.vtk").read().split("\n")
+# Mid-plane slice of the rF1 fluid mesh (legacy VTK polydata)
+L = open("rF1_x0.vtk").read().split("\n")
 i = 0
 while not L[i].startswith("POINTS"):
     i += 1
@@ -95,7 +95,7 @@ b.set_ylim(-39.5, 39.5)
 b.set_aspect("equal")
 b.set_xlabel(r"$z$ (mm)")
 b.set_ylabel(r"$y$ (mm)")
-b.set_title(r"(b) fluid mesh feF1 ($2.3\times10^{5}$ cells) at $x = 0$, "
+b.set_title(r"(b) fluid mesh rF1 ($3.1\times10^{5}$ cells) at $x = 0$, "
             r"undeformed flap", fontsize=8, loc="left")
 fig.savefig("hessenthaler-geometry.pdf", bbox_inches="tight", dpi=600)
 fig.savefig("hessenthaler-geometry.png", dpi=200, bbox_inches="tight")
