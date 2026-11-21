@@ -32,7 +32,7 @@ On the interface the fluid velocity equals the velocity of the moving wall, and 
 
 \subsection{Fluid mesh motion}\label{sec:fluid_mesh_motion}
 
-The interior fluid mesh follows the interface through a Laplacian equation for the cell motion velocity (\texttt{velocityLaplacian}), whose diffusivity varies with the inverse (in most cases the inverse square) of the distance to the moving boundaries, so that cells near the interface move almost rigidly~\citep{Tukovic2018}.
+The interior fluid mesh follows the interface through a Laplacian equation for the cell motion velocity (\texttt{velocityLaplacian}) or, where stated (the corrected Hron--Turek FSI3 set-up and the manufactured solution), for the cell displacement, whose diffusivity varies with the inverse (in most cases the inverse square) of the distance to the moving boundaries, so that cells near the interface move almost rigidly~\citep{Tukovic2018}.
 The interface displacement is the solid displacement transferred to the fluid interface (Section~\ref{sec:interface_transfer}); the point motion is obtained from the cell motion velocity by interpolation, and the mesh points are moved once per coupling iteration.
 Mesh motion is a numerical device: it changes the discrete solution only through the mesh quality and through the space-conservation and moving-wall treatments described above.
 
@@ -41,7 +41,7 @@ Mesh motion is a numerical device: it changes the discrete solution only through
 %%--------------------------------------------------------------------------------------------------------------------%%
 
 The solid momentum equation (Section~\ref{sec:solid_model}) is discretised by a cell-centred finite volume method with the total displacement as unknown~\citep{Jasak2000, Cardiff2021}.
-Two kinematic formulations are used: a small-strain (linear geometry) formulation for the linear-elastic walls (the ring added-mass problem, the Womersley tube and the 3-D pressure-pulse tube), and a total Lagrangian formulation for the finite-strain problems, with St Venant--Kirchhoff (the Hron--Turek benchmarks, the collapsible channel and the Mok lid-driven cavity) or neo-Hookean (the Hessenthaler flap) material laws.
+Two kinematic formulations are used: a small-strain (linear geometry) formulation for the linear-elastic walls (the ring added-mass problem, the Womersley tube and the 3-D pressure-pulse tube), and a total Lagrangian formulation for the finite-strain problems, with St Venant--Kirchhoff (the Hron--Turek benchmarks, the collapsible channel and the Mok lid-driven cavity) or neo-Hookean (the Hessenthaler flap, the blob in treacle and the manufactured solution) material laws.
 The time derivative uses BDF2, and each solid solve is a Newton--Krylov iteration through the PETSc SNES interface~\citep{PETSc, Cardiff2026}.
 Two spatial variants are used.
 The \emph{standard} variant uses a linear least-squares reconstruction of the displacement and a compact-stencil momentum stabilisation, a Rhie--Chow-type difference between the compact and the reconstructed face normal gradient, scaled by a user factor~\citep{Cardiff2026}; it is formally second order, but the stabilisation is not negligible on coarse meshes and stiffens thin, bending-dominated structures (Section~\ref{sec:fsi1}).
@@ -55,7 +55,7 @@ Which variant is used is stated per case, because for thin bending-dominated wal
 %%--------------------------------------------------------------------------------------------------------------------%%
 
 Displacements are transferred from the solid to the fluid interface at the interface points, and tractions from the fluid to the solid interface at the faces.
-Where the two interface meshes coincide (the ring added-mass problem, the Womersley tube, the collapsible channel and the Mok lid-driven cavity), a direct one-to-one map is used.
+Where the two interface meshes coincide (the ring added-mass problem, the Womersley tube, the manufactured solution, the collapsible channel and the Mok lid-driven cavity), a direct one-to-one map is used.
 Where they do not (the Hron--Turek benchmarks, the 3-D pressure-pulse tube and the Hessenthaler flap), face tractions are interpolated with arbitrary-mesh-interface (AMI) weights, and point displacements by barycentric interpolation on a triangulation of the donor interface faces.
 The finite volume fluid delivers one area-averaged traction per face, and the solid receives one value per interface face.
 With the high-order solid this value is applied uniformly at all quadrature points of the face, so the interface load is piecewise constant: it preserves the transferred force on every face and is second-order accurate, consistent with the fluid, but it does not carry the higher order of the solid operator to the coupled problem.

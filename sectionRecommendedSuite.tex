@@ -26,7 +26,7 @@ We therefore propose a tiered suite (Table~\ref{tab:suite_tiers}), with membersh
 		Hron--Turek FSI1 & B & steady large-deformation coupling & core \\
 		\midrule
 		\multicolumn{4}{l}{\emph{Extended / high-cost suite}} \\
-		Hron--Turek FSI2, FSI3 & C (FSI2), B (FSI3) & self-excited oscillation; lift amplitude; tolerance sensitivity; mesh-motion history; set-up-induced sub-nominal order & FSI3 three levels (tutorial set-up) and four (corrected set-up) \hl{[FSI3: ring+box, to be replaced]}; FSI2 two levels \\
+		Hron--Turek FSI2, FSI3 & C (FSI2), B (FSI3) & self-excited oscillation; lift amplitude; tolerance sensitivity; mesh-motion history; set-up-induced sub-nominal order & FSI3 three levels (baseline set-up) and four (corrected set-up) \hl{[FSI3: ring+box, to be replaced]}; FSI2 two levels \\
 		3dTube & C-weak & 3-D wave propagation with added mass; time-discretisation sensitivity; cross-platform and toolchain checks & three levels; $u_{r,\max}$ not yet converging \\
 		beamInCrossFlow$^\ast$ & C & 3-D steady external flow; displacement and force convergence & four levels, corrected inflow; orders rising to 1.6 (Appendix~\ref{app:beam}) \\
 		Hessenthaler$^\ast$ & C & realistic 3-D geometry, large deformation; steady-state iterative error; validation data kept separate & three fluid levels, not shown to be asymptotic (mesh sensitivity only); \hl{[rF2 acceleration run pending]} \\
@@ -43,7 +43,7 @@ We therefore propose a tiered suite (Table~\ref{tab:suite_tiers}), with membersh
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The routine subset of the core suite (the default levels of each driver) is cheap enough to run after any change to a discretisation or coupling algorithm; the full refinement studies behind the statements of Section~\ref{sec:benchmark_suite} (for FSI1, $\approx25$\,h on 64 ranks for the finest level) are a verification campaign, not a routine check.
-Its backbone is the two category-A problems, which alone measure the total error directly; the category-B problems extend it to large deformation within reference uncertainties of $<0.01\%$ plus a $0.05\%$ model-form difference (collapsible channel, oomph-lib extrapolated to zero mesh size) and $\approx0.2\%$ (FSI1).
+Its backbone is the three category-A problems (the ring added-mass problem, the Womersley tube and the manufactured solution), which alone measure the total error directly; the category-B problems extend it to large deformation within reference uncertainties of $<0.01\%$ plus a $0.05\%$ model-form difference (collapsible channel, oomph-lib extrapolated to zero mesh size) and $\approx0.2\%$ (FSI1).
 
 The requirement is not a fixed matrix of studies but the principle of Section~\ref{sec:convergence_method}: for each QoI on which a claim is made, the error sources that materially affect it must be shown to be controlled below the uncertainty relevant to the claim.
 The benchmarks therefore emphasise different studies: the ring added-mass problem isolates temporal, solid-discretisation and added-mass effects; the Womersley tube requires careful temporal and phase analysis and a flux-consistent treatment of its truncated ends; the collapsible channel requires control of the solid discretisation and of the coupling tolerance; and, in the extended suite, Hron--Turek FSI3 requires separate solid, rigid-fluid and prescribed-motion studies to interpret its sub-nominal coupled order.
@@ -86,7 +86,7 @@ Table~\ref{tab:driver_properties} states which of these properties the present d
 	\centering
 	\footnotesize
 	\setlength{\tabcolsep}{4pt}
-	\caption{Reproducibility properties implemented by the verification driver of each case (solids4foam \texttt{development}, November 2026): non-zero exit status on failure (Exit), CSV output, hashes of the case files, the OpenFOAM version, a fingerprint of the solver executable and libraries, and the solids4foam commit. The driver of the Hessenthaler flap is not yet part of the released suite and is not included.}
+	\caption{Reproducibility properties implemented by the verification driver of each case (solids4foam \texttt{development}, November 2026): non-zero exit status on failure (Exit), CSV output, hashes of the case files, the OpenFOAM version, a fingerprint of the solver executable and libraries, and the solids4foam commit. The drivers of the Hessenthaler flap and of the manufactured solution are not yet part of the released suite and are not included.}
 	\label{tab:driver_properties}
 	\begin{tabular}{lcccccc}
 		\toprule
