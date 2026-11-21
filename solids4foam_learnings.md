@@ -216,5 +216,12 @@ Set-up details that cost time because the tutorial or its reference did not say 
 - **Found:** 2026-11-21, manufactured-solution FSI case (solver-paper agent B).
 - **What goes wrong:** with the partitioned couplings, fluid p converges at about first order over the whole domain. Fluid U converges at about 1.3, and there is an outlet–bottom-wall corner error with an L∞ order of 0.4–0.8. Meanwhile the solid is second order, and the quasi-monolithic fluid gives a pressure order of 1.7–2.1 on the same meshes.
 - **Ruled out (2026-11-21, `/Users/philipc/claude-runs/mms-pfv`):** skew-corrected continuity flux (entry 1), `movingWallPressure` on the interface (entry 3), and the exact pressure gradient on the bottom wall. Each changes the fluid orders by at most 0.1.
+- **Lead (solver-paper agent B, 2026-11-21, solids4foam #750 comment 7063555399 and #752):** `pimpleFluid`'s `ddtCorr`, on by default, accounts for much of the first-order pressure. With Aitken on n16–n64, Δt refined with h:
+  - default: p L2 orders 0.88 and 0.94;
+  - unlimited `backward 1`: 1.13 and 1.40;
+  - `ddtCorr no`: 1.73 and 1.49, with p L2 at n64 2.4× lower and U L∞ 3.4× lower.
+
+  This is not yet a recommendation, because Δt and h were refined together; separate fixed-Δt and fixed-mesh studies are needed. Related: entry 16, which is also a Rhie–Chow/Δt effect, and solver-paper register entry 33 (time-history-consistent Rhie–Chow for QM, #752).
+- **Also open:** the partitioned solid and interface displacements are first order at t = 0.2 for both couplings, while QM is second order. From n64 to n128 at t = 0.4 their order drops to 0.7–0.8 (paper-data/mms_fsi). The interface pressure condition does not change this.
 - **State:** Issue filed: solids4foam#750. Diagnostic variants are requested: fluid only with prescribed interface motion, and an outlet without the corner clash.
 - **Robust fix to consider:** depends on the cause.
