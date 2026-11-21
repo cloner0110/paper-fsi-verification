@@ -104,6 +104,25 @@ The skew correction moves the levels 2–4 limits by +0.036 % (u_y) and
   solids4foam PR #743 and in the reply on pfv#102. F_y was recorded to four
   decimals only, and the run directory is not in `cavgap`.
 
+## Cost (serial wall clock, Mac Studio)
+
+`clock_time_s` of the sequence rows in the runs' `mesh_convergence.csv`
+(`/Users/philipc/claude-runs/cavgap/skew_L*/verification/postProcessing/`):
+
+| Level | Run | Δt (s) | Wall clock (s) |
+|---:|---|---:|---:|
+| 1 | `skew_L1`, row level 1 | 0.5 | 22 |
+| 2 | `skew_L2`, row level 2 | 0.25 | 128 |
+| 3 | `skew_L3`, row level 3 | 0.125 | 1 019 |
+| 4 | `skew_L4`, row level 4 | 0.0625 | 12 383 |
+| total | | | 13 552 (3.8 h) |
+
+Level 4 used `nOuterCorr 40` and fluid linear-solver tolerances of 1e-8
+(see Provenance). The Mac Studio (20 cores) was shared with other jobs at
+the time, at a load of about 14, so these times are upper bounds. They
+replace the "three-level sweep ≈ 10 min" of the earlier sequence in the
+paper's cost table.
+
 ## Δt check (resolved 2026-11-21)
 
 The steady state depends on the pseudo-time step, through the Δt-dependent

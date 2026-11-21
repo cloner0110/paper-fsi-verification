@@ -203,7 +203,9 @@ Cross-platform replication, decomposition invariance and symmetry checks are ine
 \subsection{Reliability of published benchmark values}\label{sec:published_reliability}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Among the literature-referenced problems in the suite, only the Featflow FSI1 table and the regenerated collapsible-channel reference are both independent and accompanied by convergence evidence at the resolution used here (Table~\ref{tab:published}).
+Of the ten problems without an exact reference, four have a reference that is both independent of the code under test and converged at the resolution used (category B): Hron--Turek FSI1 (Featflow; SU2--CalculiX), FSI3~\citep{Failer2020}, the collapsible channel (oomph-lib) and the Mok lid-driven cavity (Kratos); the flexible-bottom cavity (SU2--CalculiX) would be a fifth \hl{[pending merge of the SU2 data]}.
+Only two of these, the Featflow FSI1 table and the sequence of~\citet{Failer2020}, are published values; the other two references were computed for this study.
+Of the remaining cases, the independent references of FSI2 and of the 3-D pressure-pulse tube are not converged at the resolution used, that of the beam in cross-flow is converged but published to three digits and for an inflow that had to be corrected, and the Hessenthaler flap and the blob in treacle have second solutions only from the same group or code lineage (Table~\ref{tab:published}).
 This is a statement about the specific values used, not about the quality of the FSI benchmark literature in general.
 
 \begin{table}[htbp]
@@ -217,10 +219,10 @@ This is a statement about the specific values used, not about the quality of the
 		Case & Issue & Consequence \\
 		\midrule
 		Hron--Turek FSI2/3 & Summary values of~\citet{Turek2006} differ from Featflow tables (FSI3 drag amplitude $-18\%$; rounded frequencies); Featflow level 3$\to$4 changes 1.6--4.5\% (FSI3 displacements and force amplitudes), 0.9--2.5\% (FSI2) & Choice of source changes conclusions; FSI3 reference uncertain by 3--5\% in $u_x$ and force amplitudes; displacements and drag amplitude non-monotone over levels 2--4; reference lift amplitude drifts $2.7\%$ over its time history \\
-		3-D pressure-pulse tube & Independent references use implicit Euler, $\Delta t = 10^{-4}\,\mathrm{s}$, without time-step studies; peaks 20--25\% below BDF2 values; figure-digitised & Implicit Euler in the present code reproduces 92--115\% of the gap \\
+		3-D pressure-pulse tube & Independent references use implicit Euler, $\Delta t = 10^{-4}\,\mathrm{s}$, without time-step studies; peaks 20--25\% below BDF2 values; figure-digitised & Implicit Euler in the present code reproduces 92--115\% of the gap; an independent Kratos solution with implicit Euler lies between the published peaks \\
 		Mok lid-driven cavity & Two inconsistent problem definitions; mesh-dependent openings; no convincing convergence studies; the Kratos tutorial example moves the group-B openings & No published value can be treated as correct; an independent Kratos solution with fixed openings agrees with solids4foam to $\approx1\%$ and lies above all published group-B peaks and troughs \\
 		Collapsible channel & Published problem (pre-stressed, massless wall) unsuitable for continuum/partitioned comparison & Modified problem and regenerated reference used \\
-		Beam in cross-flow & Quoted values ($5.95\times10^{-5}\,\mathrm{m}$, $1.33\,\mathrm{N}$) are rounded extrapolations of \citet{Richter2012}, often cited to a later paper; printed inflow peak ($0.3\,\mathrm{m/s}$) is an error, inconsistent with the stated mean and $Re$, and the author confirms the reference values used $0.2\,\mathrm{m/s}$; earlier calculations solved a different beam position, monitoring point and inflow & The printed inflow gives $1.8$ times the reference values; with the corrected $0.2\,\mathrm{m/s}$ peak level 3 is within $0.1$--$0.2\%$ (Appendix~\ref{app:beam}) \\
+		Beam in cross-flow & Quoted values ($5.95\times10^{-5}\,\mathrm{m}$, $1.33\,\mathrm{N}$) are rounded extrapolations of \citet{Richter2012}, often cited to a later paper; printed inflow peak ($0.3\,\mathrm{m/s}$) is an error, inconsistent with the stated mean and $Re$, and the author confirms the reference values used $0.2\,\mathrm{m/s}$; earlier calculations solved a different beam position, monitoring point and inflow & The printed inflow gives $1.8$ times the reference values; with the corrected $0.2\,\mathrm{m/s}$ peak level 3 is within $0.1$--$0.2\%$, and an independent two-level Kratos solution within $0.5\%$ in $u_x(A)$ (Appendix~\ref{app:beam}) \\
 		Flexible-bottom cavity & Same-lineage, from the figure; published forces per $0.05\,\mathrm{m}$ depth; the published and ANSYS displacements are consistent with neo-Hookean and logarithmic-strain plates, not St Venant--Kirchhoff & Forces agree to $0.02$--$0.3\%$; an independent St Venant--Kirchhoff solution (SU2--CalculiX) agrees to $0.010\%$ ($u_y$) and $0.003\%$ ($F_y$) \hl{[pending merge of the SU2 data]}; COMSOL converges at first order to $\approx2\%$ above the other solutions \hl{[awaiting COMSOL element order / quadratic levels]} \\
 		Blob in treacle & Preprint figures only, with a small-strain solid; first-order time, coarse steady mesh & Redefined with a finite-strain solid, so the published values are not used; a small-strain solid integrating over the undeformed surface received $12\%$ less $x$-force than the fluid exerted \\
 		\bottomrule
@@ -239,7 +241,7 @@ Disagreements between codes can originate in the discretisation of the reference
 	\centering
 	\footnotesize
 	\setlength{\tabcolsep}{3pt}
-	\caption{Recorded computational cost of the verification studies. Hardware and core counts differ between cases, so the figures indicate orders of magnitude only.}
+	\caption{Recorded computational cost of the verification studies. Hardware and core counts differ between cases, so the figures indicate orders of magnitude only. $^\S$~Wall-clock times on a machine shared with other jobs (load $\approx14$ on 20 cores), so upper bounds (\texttt{paper-data/cavity\_partitioned\_skew/README.md}).}
 	\label{tab:cost}
 	\begin{tabular}{p{3.0cm}p{10.8cm}}
 		\toprule
@@ -253,7 +255,7 @@ Disagreements between codes can originate in the discretisation of the reference
 		Hron--Turek FSI2 & 1x 1.1--1.2\,h serial; 2x 4.0--4.1\,h on 7--8 ranks \\
 		3-D pressure-pulse tube & earlier meshes: level 1 504\,s on 4 ranks; level 2 3\,641\,s on 8 ranks; level 3 22\,502\,s (6.25\,h) on 32 ranks ($\approx200$ core-hours); desktop workstation, 32 ranks: 123\,s, 1\,123\,s and 25\,166\,s (7.0\,h); corrected meshes, level 3 on the same workstation: 25\,060\,s \\
 		Mok lid-driven cavity & $96^2$ 3\,729\,s on 2 ranks; quick run $\approx7$\,min \\
-		Flexible-bottom cavity$^\ast$ & three-level sweep $\approx10$\,min serial \\
+		Flexible-bottom cavity$^\ast$ & four levels, serial, Mac Studio: 22\,s, 128\,s, 1\,019\,s and 12\,383\,s at $\Delta t = 0.5$, $0.25$, $0.125$ and $0.0625\,\mathrm{s}$ (level 4 with a limit of 40 coupling iterations per step and fluid solver tolerances of $10^{-8}$); $13\,552\,\mathrm{s}$ ($3.8$\,h) in total$^\S$ \\
 		Beam in cross-flow$^\ast$ & level 3 ($4.2\times10^{6}$ fluid cells) $\approx45$ node-hours on 128-core nodes; both inflows to level 3 with checks $158$ node-hours ($2.0\times10^{4}$ core-hours) \\
 		Blob in treacle$^\ast$ & full study $\approx40$\,min \\
 		Hessenthaler flap$^\ast$ & strict test from $t = 0$ to $45\,\mathrm{s}$, single nodes: rF0 ($1.2\times10^{5}$ fluid cells) 14\,h and rF1 ($3.1\times10^{5}$) 8--19\,h on 24 ranks ($2$--$4.5\times10^{2}$ core-hours); rF2 ($8.3\times10^{5}$, zero-gradient interface pressure) 37\,h on 48 ranks ($1.8\times10^{3}$ core-hours), including the steps at the iteration limit \\
