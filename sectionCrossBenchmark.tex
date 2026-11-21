@@ -32,7 +32,7 @@ The observations are specific to this suite and to one code family, and are not 
 		Collapsible channel & 1.6, 2.1, 2.5 & 1.8, 2.0 & vs ref.\ (B); SD (time) \\
 		Hron--Turek FSI1 & $u_x$ 1.0--1.1; $u_y$, lift 1.6--1.9; drag 1.5 & pseudo-time step $\leq0.012\%$ & SD (four levels); vs ref.\ (B); second solid code ($0.02\%$); independent codes ($u_y$, lift $\leq0.3\%$) \\
 		Hron--Turek FSI3 & baseline set-up: displacements 0.9--1.1; corrected set-up: displacements not asymptotic (apparent order $\approx3$ on 1x$'$--4x$'$; $1$--$2\%$ change to 8x$'$, earlier wall condition), frequency 1.6 \hl{[FSI3: ring+box, to be replaced]} & time and coupling $\leq0.07$ of the 4x$'\to$8x$'$ displacement change & SD \\
-		3-D pressure-pulse tube & $u_{z,\min}$ 0.87, $t_\mathrm{arr}$ 0.72; $u_{r,\max}$ not defined (changes grow) & 0.1--0.2\% change at the fine-level $\Delta t$ & SD \\
+		3-D pressure-pulse tube & $u_{z,\min}$ 0.87, $t_\mathrm{arr}$ 0.74; $u_{r,\max}$ not defined (changes grow) & 0.1--0.2\% change at the fine-level $\Delta t$ & SD \\
 		Mok lid-driven cavity & peak $\approx1.2$; trough $<0.5$ (scaled) & changes $0.17$, $0.04\%$ & SD \\
 		Flexible-bottom cavity$^\ast$ & $u_y$ 1.93, 1.98; $F_y$ 2.03, 1.86 (four levels, scaled) & pseudo-time step ($\Delta t \to 0.0625\,\mathrm{s}$): $0.18$, $0.03$, $0.001\%$ on levels 1--3 & SD \\
 		Beam in cross-flow$^\ast$ & $u_x(A)$ 1.64, $F_x$ 1.60 (levels 1--3, corrected inflow; Appendix~\ref{app:beam}) & $\Delta t$ (Rhie--Chow) $\approx1/240$ of the level-2-to-3 change & SD \\
@@ -89,7 +89,7 @@ In every case with more than one QoI, the QoIs converge at substantially differe
 		Hron--Turek FSI1 (8x) & drag $0.02\%$, lift $0.05\%$ & $u_y$ $0.64\%$; $u_x$ first order, crossing the reference \\
 		Hron--Turek FSI3 (4x$'$, corrected) & drag mean within $0.1\%$ and frequency $0.3\%$ of the reference & $u_y$ amplitude $2.2\%$, $u_x$ $4.4$--$4.5\%$ and lift amplitude $4.0\%$ above the reference (8x$'$, earlier wall condition: $2.1\%$, $4.1$--$4.2\%$, $1.7\%$); displacements and force amplitudes not in the asymptotic range \hl{[FSI3: ring+box, to be replaced]} \\
 		Hron--Turek FSI2 (2x) & drag mean $0.5\%$; $u_y$ amplitude $1.3\%$ & lift amplitude $7.8\%$, not converging \\
-		3-D pressure-pulse tube & $u_{z,\min}$, $t_\mathrm{arr}$: monotone, orders 0.87, 0.72 & $u_{r,\max}$, $c_p$: changes grow ($u_{r,\max}$ $0.20\%$, $0.60\%$) \\
+		3-D pressure-pulse tube & $u_{z,\min}$, $t_\mathrm{arr}$: monotone, orders 0.87, 0.74 & $u_{r,\max}$, $c_p$: changes grow ($u_{r,\max}$ $0.21\%$, $0.59\%$) \\
 		Mok lid-driven cavity & peak (order $\approx1.2$) & trough (order $<0.5$) \\
 		Flexible-bottom cavity$^\ast$ & $F_y$: GCI $0.045\%$; within $0.004\%$ of the three other St Venant--Kirchhoff limits except COMSOL ($\approx2\%$, first order); $0.02\%$ from the published values, $0.3\%$ from ANSYS & $u_y$: GCI $0.31\%$, within $0.016\%$ of the same three limits; published and ANSYS $u_y$ $4.3\%$ and $5.4\%$ larger in magnitude, from other constitutive laws \\
 				\bottomrule
