@@ -11,8 +11,8 @@ Data behind Tables `tab:hessenthaler_results` and `tab:hessenthaler_validation`.
 - `hv_pfv_differences.csv`: differences between meshes, between interface pressure conditions and
   against the quasi-monolithic solutions.
 
-Both are copied unchanged from the analysis directory `claude-runs/hv-analysis/` (20 Nov 2026), whose
-README gives the commands.
+Both are copied unchanged from the analysis directory `claude-runs/hv-analysis/` (20 Nov 2026;
+refreshed 22 Nov 2026 with the finished `P_rF2_LUST_b02_mwp`), whose README gives the commands.
 
 ## Runs (UCD Sonic, `/scratch/pcardiff/hv/`, read only)
 
@@ -20,7 +20,7 @@ README gives the commands.
 |---|---|---|---|---|
 | `P_rF0_LUST_b02_mwp` | `movingWallPressure` | 122 435 | 24 | 51 792 s |
 | `P_rF1_LUST_b02_mwp` | `movingWallPressure` | 312 180 | 24 | 66 835 s |
-| `P_rF2_LUST_b02_mwp` | `movingWallPressure` | 832 552 | 48 | running (t = 34 on 20 Nov 2026) |
+| `P_rF2_LUST_b02_mwp` | `movingWallPressure` | 832 552 | 48 | 193 326 s |
 | `P_rF0_LUST_b02` | `zeroGradient` | 122 435 | 24 | 52 360 s |
 | `P_rF1_LUST_b02` | `zeroGradient` | 312 180 | 24 | 30 259 s |
 | `P_rF2_LUST_b02` | `zeroGradient` | 832 552 | 48 | 133 556 s |
@@ -59,8 +59,17 @@ interface band; strict checkMesh OK".
 ## Notes
 
 - The tip of rF0 and rF1 wanders by 0.1-0.2 mm peak to peak over t = 25-45 s (both conditions);
-  only zeroGradient rF2 settles monotonically.
+  only the rF2 runs settle monotonically.
 - zeroGradient rF2 reaches nOuterCorr = 60 in 441 steps from t = 36.9 s (residual about 2e-4
   against 1e-4); over t = 40-45 s the tip has a standard deviation of 1.5e-4 mm and a range of
   5.3e-4 mm. The absolute interface residuals were not examined.
-- Apparent order of the zeroGradient sequence (Celik form, r = 1.366, 1.387): 5.6.
+- movingWallPressure rF2 reaches nOuterCorr = 60 in 2044 steps from t = 34.2 s, including 1718 of
+  the 2501 steps in t = 40-45 s (46.0 coupling iterations per step). The residual at the cap is
+  1e-4 to 1.7e-3, median 2.7e-4. Over t = 40-45 s the tip has a standard deviation of 8.6e-5 mm and
+  a range of 3.0e-4 mm.
+- Apparent order of the tip mean over t = 40-45 s (Celik form, r = 1.366, 1.387): 1.9 for
+  movingWallPressure (steps +0.301 and +0.173 mm), 5.6 for zeroGradient (+0.356 and +0.063 mm).
+  The rF0 and rF1 window means carry the wander noted above, so neither order is reliable. The
+  `order` rows of `hv_pfv_differences.csv` give the order of every monotone QoI.
+- On rF2, zeroGradient minus movingWallPressure is -0.002 mm in the tip, against +0.053 mm (rF0)
+  and +0.108 mm (rF1).
