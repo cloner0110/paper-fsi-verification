@@ -4,19 +4,21 @@ Front rules of the solids4foam driver: wall arrival is the first upward crossing
 
 The solids4foam values are old-mesh values, from the tube meshes of commit `a421f063d`, which round the wall arcs to four digits. The corrected meshes move them by 0.1–0.35%.
 
+The column and row marked corrected are level 3 on the corrected meshes (full-precision wall arcs). Its wall arrivals differ from the old-mesh level 3 by at most 0.0015 ms.
+
 ## Wall arrival per station (ms), matched levels
 
-| z (mm) | Kratos L1 | s4f L1 (old mesh) | diff | Kratos L2 | s4f L2 (old mesh) | diff | s4f L3 (old mesh) |
-|---|---|---|---|---|---|---|---|
-| 5 | 1.195 | 1.181 | +0.013 | 1.206 | 1.194 | +0.012 | 1.201 |
-| 10 | 2.432 | 2.401 | +0.030 | 2.456 | 2.435 | +0.021 | 2.448 |
-| 15 | 3.656 | 3.612 | +0.044 | 3.685 | 3.641 | +0.044 | 3.659 |
-| 20 | 4.843 | 4.786 | +0.057 | 4.876 | 4.827 | +0.049 | 4.839 |
-| 25 | 5.954 | 5.873 | +0.081 | 5.925 | 5.843 | +0.083 | 5.825 |
-| 30 | 6.698 | 6.463 | +0.235 | 6.529 | 6.415 | +0.115 | 6.426 |
-| 35 | 7.072 | 7.480 | -0.408 | 7.622 | 7.251 | +0.371 | 7.483 |
-| 40 | 8.476 | 8.406 | +0.071 | 8.532 | 8.492 | +0.039 | 8.521 |
-| 45 | 9.415 | 8.182 | +1.233 | 9.576 | 8.341 | +1.235 | 8.380 |
+| z (mm) | Kratos L1 | s4f L1 (old mesh) | diff | Kratos L2 | s4f L2 (old mesh) | diff | s4f L3 (old mesh) | s4f L3 (corrected) |
+|---|---|---|---|---|---|---|---|---|
+| 5 | 1.195 | 1.181 | +0.013 | 1.206 | 1.194 | +0.012 | 1.201 | 1.201 |
+| 10 | 2.432 | 2.401 | +0.030 | 2.456 | 2.435 | +0.021 | 2.448 | 2.447 |
+| 15 | 3.656 | 3.612 | +0.044 | 3.685 | 3.641 | +0.044 | 3.659 | 3.659 |
+| 20 | 4.843 | 4.786 | +0.057 | 4.876 | 4.827 | +0.049 | 4.839 | 4.838 |
+| 25 | 5.954 | 5.873 | +0.081 | 5.925 | 5.843 | +0.083 | 5.825 | 5.823 |
+| 30 | 6.698 | 6.463 | +0.235 | 6.529 | 6.415 | +0.115 | 6.426 | 6.426 |
+| 35 | 7.072 | 7.480 | -0.408 | 7.622 | 7.251 | +0.371 | 7.483 | 7.482 |
+| 40 | 8.476 | 8.406 | +0.071 | 8.532 | 8.492 | +0.039 | 8.521 | 8.521 |
+| 45 | 9.415 | 8.182 | +1.233 | 9.576 | 8.341 | +1.235 | 8.380 | 8.379 |
 
 Beyond 30 mm the incident front merges with the reflection from the clamped outlet and the first-peak rule can pick different features in the two codes.
 
@@ -26,6 +28,7 @@ Beyond 30 mm the incident front merges with the reflection from the clamped outl
 |---|---|---|---|
 | Kratos | 4.203 | 4.238 | – |
 | solids4foam (old mesh) | 4.263 | 4.302 | 4.326 |
+| solids4foam (corrected) | – | – | 4.327 |
 | Kratos / solids4foam − 1 | -1.42% | -1.50% | – |
 
 ## Level 1 against the solids4foam level-1 rerun (old mesh, full histories to 10 ms)

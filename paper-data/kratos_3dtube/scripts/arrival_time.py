@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Arrival-time comparison at point A and along the tube: Kratos BDF2 levels 1 and 2 against the
 solids4foam backward mesh study, and Kratos level 1 against a solids4foam level-1 rerun with full
-histories.
+histories. The solids4foam mesh study is the old-mesh one of commit a421f063d; an optional
+corrected-mesh driver CSV (level 3) is shown beside it.
 
 All front rules are the solids4foam driver's (front_arrival, first_peak, arrival_time, peak), imported
 from tube_3d_verification.py. The reference JSON is found next to the driver (reference/) or one level
@@ -10,7 +11,7 @@ up (../reference/, the layout of the solids4foam repository).
 Usage:
   python arrival_time.py <tube_3d_verification.py> <s4f mesh-study csv> <s4f level-1 rerun dir>
                          <Kratos level-1 run dir> <Kratos level-2 run dir>
-                         [--out report.md] [--csv pointA_level1.csv]
+                         [--corrected <s4f corrected-mesh csv>] [--out report.md] [--csv pointA_level1.csv]
 """
 import csv
 import importlib.util
@@ -70,7 +71,7 @@ def speed(z0, a0, z1, a1):
 def main():
     argv = sys.argv[1:]
     opts = {}
-    for key in ("--out", "--csv"):
+    for key in ("--out", "--csv", "--corrected"):
         if key in argv:
             i = argv.index(key)
             opts[key] = argv[i + 1]
@@ -79,12 +80,22 @@ def main():
     study_csv, rerun, k1_dir, k2_dir = argv[1:5]
     pin = float(ref["inlet_pressure_Pa"])
     s4f = {int(r["level"]): r for r in csv.DictReader(open(study_csv)) if r["time_scheme"] == "backward"}
+    cor = {}
+    if "--corrected" in opts:
+        cor = {int(r["level"]): r for r in csv.DictReader(open(opts["--corrected"]))
+               if r["time_scheme"] == "backward"}
+    cl = sorted(cor)
     L = ["# 3dTube arrival times, Kratos against solids4foam\n",
          "Front rules of the solids4foam driver: wall arrival is the first upward crossing of 50% of the "
          "station's incident peak (the first local maximum above 50% of the history maximum); pressure "
          "arrival is the first crossing of 50% of the inlet pressure.\n",
          "The solids4foam values are old-mesh values, from the tube meshes of commit `a421f063d`, which "
          "round the wall arcs to four digits. The corrected meshes move them by 0.1–0.35%.\n"]
+    for l in cl:
+        d = max(abs(float(cor[l][f"wall_arrival_z{z:02d}mm_s"]) - float(s4f[l][f"wall_arrival_z{z:02d}mm_s"]))
+                for z in Z_MM)
+        L.append(f"The column and row marked corrected are level {l} on the corrected meshes (full-precision "
+                 f"wall arcs). Its wall arrivals differ from the old-mesh level {l} by at most {1e3 * d:.4f} ms.\n")
 
     # 1. Wall arrivals per station against the solids4foam mesh study
     arrivals = {}
@@ -93,14 +104,15 @@ def main():
         arrivals[lev] = {z: drv.front_arrival(wall[z], ref) for z in Z_MM}
     L.append("## Wall arrival per station (ms), matched levels\n")
     L.append("| z (mm) | Kratos L1 | s4f L1 (old mesh) | diff | Kratos L2 | s4f L2 (old mesh) | diff "
-             "| s4f L3 (old mesh) |")
-    L.append("|---|---|---|---|---|---|---|---|")
+             "| s4f L3 (old mesh) |" + "".join(f" s4f L{l} (corrected) |" for l in cl))
+    L.append("|---" * (8 + len(cl)) + "|")
     for z in Z_MM:
         k = f"wall_arrival_z{z:02d}mm_s"
         a1, a2 = arrivals[1][z][0], arrivals[2][z][0]
         s1, s2, s3 = (float(s4f[l][k]) for l in (1, 2, 3))
         L.append(f"| {z} | {1e3 * a1:.3f} | {1e3 * s1:.3f} | {1e3 * (a1 - s1):+.3f} | {1e3 * a2:.3f} | "
-                 f"{1e3 * s2:.3f} | {1e3 * (a2 - s2):+.3f} | {1e3 * s3:.3f} |")
+                 f"{1e3 * s2:.3f} | {1e3 * (a2 - s2):+.3f} | {1e3 * s3:.3f} |"
+                 + "".join(f" {1e3 * float(cor[l][k]):.3f} |" for l in cl))
     L.append("\nBeyond 30 mm the incident front merges with the reflection from the clamped outlet and the "
              "first-peak rule can pick different features in the two codes.\n")
 
@@ -113,6 +125,11 @@ def main():
           for l in (1, 2, 3)]
     L.append(f"| Kratos | {ks[0]:.3f} | {ks[1]:.3f} | – |")
     L.append(f"| solids4foam (old mesh) | {ss[0]:.3f} | {ss[1]:.3f} | {ss[2]:.3f} |")
+    if cl:
+        cs = {l: speed(5, float(cor[l]["wall_arrival_z05mm_s"]), 25, float(cor[l]["wall_arrival_z25mm_s"]))
+              for l in cl}
+        L.append("| solids4foam (corrected) | " + " | ".join(f"{cs[l]:.3f}" if l in cs else "–" for l in (1, 2, 3))
+                 + " |")
     L.append(f"| Kratos / solids4foam − 1 | {100 * (ks[0] / ss[0] - 1):+.2f}% | "
              f"{100 * (ks[1] / ss[1] - 1):+.2f}% | – |\n")
 

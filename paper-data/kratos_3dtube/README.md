@@ -8,19 +8,22 @@ issue #36.
 **Main results.**
 
 - **Step 1.** With implicit Euler at Δt = 1e-4 s (level 1), Kratos reproduces the published finite element
-  values. Its peak u_r,max(A) is 0.12334 mm, 22.2% below solids4foam's backward level 3, as solids4foam's
-  own Euler run (22.8%), Lozovskiy et al. (24.7%) and Eken (21.6%) are. The 20–25% gap between the
+  values. Its peak u_r,max(A) is 0.12334 mm, 22.1% below solids4foam's backward level 3, as solids4foam's
+  own Euler run (22.7%), Lozovskiy et al. (24.6%) and Eken (21.5%) are. The 20–25% gap between the
   published values and solids4foam is first-order time integration, not a code difference.
 - **Step 2.** With BDF2 and Δt halved with the mesh (levels 1 and 2), the Kratos peak rises by 30%, as in
-  solids4foam (30.5%). At level 2 Kratos is within 0.2% of solids4foam's level 3 in u_z,min(A) and the
-  peak time, 0.23% below it in c_p, and 1.5% above it in u_r,max(A).
+  solids4foam (30.5%, old mesh). At level 2 Kratos is within 0.2% of solids4foam's level 3 in u_z,min(A)
+  and the peak time, 0.9% below it in c_p, and 1.7% above it in u_r,max(A).
 - **Arrival time.** t_arr(A) is 1.4% later in Kratos at matched levels. The definition is the same; the
   difference is a wall front that travels 1.4–1.5% slower between z = 5 and 25 mm at both levels.
 
-The solids4foam values in this folder are old-mesh values, from the tube meshes of commit `a421f063d`,
-which round the wall arcs to four digits. solids4foam has since corrected its meshes, which moves its
-values by 0.1–0.35%. The comparisons, those with level 3 in particular, are to be updated with the
-corrected values.
+The solids4foam values at point A are those of the corrected meshes, which define the wall arcs to full
+precision (Philip on #92, 21 November 2026, and `../3dtube_level3_corrected_ecore/`). Some solids4foam
+inputs are still old-mesh values, from the meshes of commit `a421f063d`, which round the arcs to four
+digits. These are the Euler level-1 run, the peak times and per-station arrivals at levels 1 and 2, and
+the level-1 rerun with full histories. The correction moves the point-A displacements and t_arr by at
+most 0.14% and the level-3 wall arrivals by at most 0.0015 ms. c_p moves by 0.2–0.7%; at level 1 nearly
+all of that comes from the unshifted axis probes of the corrected runs (see Arrival time).
 
 ## Code and platform
 
@@ -142,25 +145,26 @@ are in `figures/step1_point_A_histories.png`.
 
 Every step met the tolerance except the first step of level 2 (below).
 
-| QoI | Kratos L1 | solids4foam L1 (old mesh) | Kratos L2 | solids4foam L2 (old mesh) | solids4foam L3 (old mesh) |
+| QoI | Kratos L1 | solids4foam L1 | Kratos L2 | solids4foam L2 | solids4foam L3 |
 |---|---|---|---|---|---|
-| u_r,max(A) (mm) | 0.16035 | 0.15978 | 0.16096 | 0.15946 | 0.15851 |
-| t(u_r,max) (ms) | 7.175 | 7.201 | 7.262 | 7.215 | 7.252 |
-| u_z,min(A) (mm) | −0.08198 | −0.08819 | −0.08555 | −0.08659 | −0.08571 |
-| t_arr(A) (ms) | 5.954 | 5.873 | 5.925 | 5.843 | 5.825 |
-| c_p (m/s) | 4.578 | 4.654 | 4.583 | 4.635 | 4.594 |
+| u_r,max(A) (mm) | 0.16035 | 0.15958 | 0.16096 | 0.15924 | 0.15831 |
+| t(u_r,max) (ms) | 7.175 | 7.201 (old mesh) | 7.262 | 7.215 (old mesh) | 7.251 |
+| u_z,min(A) (mm) | −0.08198 | −0.08817 | −0.08555 | −0.08657 | −0.08570 |
+| t_arr(A) (ms) | 5.954 | 5.872 | 5.925 | 5.841 | 5.823 |
+| c_p (m/s) | 4.578 | 4.664 | 4.583 | 4.651 | 4.625 |
 
-The solids4foam values are old-mesh values (`a421f063d`) from the backward mesh study
-(`../3dtube_level3_findings.md`, Section 12.6, and `../3dtube_level3_ecore/`).
+The solids4foam values are those of the backward mesh study on the corrected meshes (Philip on #92, and
+`../3dtube_level3_corrected_ecore/` for level 3). The peak times at levels 1 and 2 were not given for the
+corrected meshes and are old-mesh values (`../3dtube_level3_ecore/`).
 
 - **u_z,min.** The 7% gap at level 1 is consistent with a mesh effect. The two codes approach from
   opposite sides, and Kratos level 2 is within 0.2% of solids4foam's level 3.
-- **u_r,max.** Kratos is 0.4% above solids4foam at level 1 and 0.9% at level 2, and 1.5% above its level 3.
+- **u_r,max.** Kratos is 0.5% above solids4foam at level 1 and 1.1% at level 2, and 1.7% above its level 3.
   The Kratos peak rises with refinement (+0.4%) while solids4foam's falls (−0.2%, then −0.6%).
-- **Timing.** The peak time agrees to 0.1% at the finest levels, and c_p is 0.23% below solids4foam's
-  level 3. t_arr is discussed below.
-- **Time integration.** The BDF2 peak is 30.0% above the Kratos Euler peak, as in solids4foam (30.5%), so
-  step 2 confirms the step-1 conclusion with second-order time integration.
+- **Timing.** The peak time agrees to 0.15% at the finest levels, and c_p is 0.9% below solids4foam's
+  level 3 (0.23% below the old-mesh value from shifted probes, 4.594 m/s). t_arr is discussed below.
+- **Time integration.** The BDF2 peak is 30.0% above the Kratos Euler peak, as in solids4foam on the old
+  meshes (30.5%), so step 2 confirms the step-1 conclusion with second-order time integration.
 
 The tables are in `results/step2_bdf2/summary_level1.md` and `summary_levels12.md`, and the histories
 in `figures/step2_point_A.png`.
@@ -195,22 +199,25 @@ the 50th solve is the one `MainKratos_tube.py` records in `history.csv`.
   (`./Allverify --quick --cores 1`, OpenFOAM v2606, serial, 590 s). It reproduces the published old-mesh
   level 1 (t_arr 5.872 against 5.873 ms, identical wall arrivals at every station).
   `results/arrival_time/solids4foam_level1_rerun/` has its monitors, settings and driver output.
-- The offset is not a fixed time shift. Kratos minus solids4foam wall arrival grows with distance from the
-  inlet, from +0.013 ms at z = 5 mm to +0.081 ms at A (level 1), and from +0.012 to +0.083 ms (level 2).
+- The offset is not a fixed time shift. Kratos minus solids4foam (old mesh) wall arrival grows with
+  distance from the inlet, from +0.013 ms at z = 5 mm to +0.081 ms at A (level 1), and from +0.012 to
+  +0.083 ms (level 2).
   The least-squares time shift that aligns the incident fronts at level 1 grows the same way, from
   −0.025 ms at 5 mm to +0.068 ms at A, so the front itself is late, not only its 50% crossing.
 - Between 5 and 25 mm the wall front travels at 4.203 and 4.238 m/s in Kratos (levels 1 and 2) and at
-  4.263, 4.302 and 4.326 m/s in solids4foam (levels 1 to 3, old mesh). Both codes speed up by about 0.8% per level,
-  and Kratos stays 1.4–1.5% slower at matched levels. The same gap shows in c_p at matched levels (−1.6%,
-  −1.1%).
+  4.263, 4.302 and 4.326 m/s in solids4foam (levels 1 to 3, old mesh; 4.327 m/s on the corrected level 3).
+  Both codes speed up by about 0.8% per level, and Kratos stays 1.4–1.5% slower at matched levels. The
+  same gap shows in c_p at matched levels (−1.8%, −1.5%).
 - The inputs are the same in both codes (small-strain linear elastic wall, material data, inlet pulse),
   and solids4foam's Robin–Neumann and IQN-ILS couplings agree to 0.07%. The gap is consistent with a
   discretisation effect (hexahedral finite elements and P1 QSVMS against cell-centred finite volumes).
 - Tuković et al. (2018), with the same rule, give t_arr(A) = 5.889 ms, between solids4foam level 3
-  (5.825 ms, old mesh) and Kratos level 2 (5.925 ms).
+  (5.823 ms) and Kratos level 2 (5.925 ms).
 - The solids4foam axis-pressure probes take the value of the containing cell. At level 1 the per-station
   pressure arrivals of this rerun (unshifted probes) are about 0.13 ms (one cell) earlier than those of the
-  published run with `--probe-z-shift 7.8125e-5`, while c_p differs by 0.2%.
+  published old-mesh run with `--probe-z-shift 7.8125e-5`, while c_p differs by 0.2% (4.663 against
+  4.654 m/s). The corrected-mesh c_p values are from unshifted probes too, and the corrected level 1
+  (4.664 m/s) is within 0.03% of this rerun.
 
 ## Runs
 
@@ -272,6 +279,7 @@ D=<solids4foam>/tutorials/fluidSolidInteraction/3dTube/verification/scripts/tube
 python scripts/tube_qoi.py $D runs/f2_dt1.25e-5_bdf2_amg runs/f1_dt2.5e-5_bdf2_amg --out results/step2_bdf2/summary_levels12.md
 python scripts/arrival_time.py $D ../3dtube_level3_ecore/mesh_robin_backward_pz7.8125e-05.csv \
     results/arrival_time/solids4foam_level1_rerun runs/f1_dt2.5e-5_bdf2_amg runs/f2_dt1.25e-5_bdf2_amg \
+    --corrected ../3dtube_level3_corrected_ecore/mesh_robin_backward.csv \
     --out results/arrival_time/arrival_time.md --csv results/arrival_time/pointA_level1.csv
 ```
 
@@ -287,7 +295,9 @@ exactly.
 - The fluid stabilisation (`dynamic_tau = 1`) and the tetrahedral fluid mesh are numerical choices that
   differ from solids4foam. The cause of the 1.4% slower front (wall or fluid discretisation) is not
   separated; a Kratos run with only the wall or only the fluid refined would do it.
-- The solids4foam values are old-mesh values (`a421f063d`) until solids4foam's corrected values replace them.
+- The solids4foam Euler run, the peak times and per-station arrivals at levels 1 and 2, and the level-1
+  rerun are old-mesh values (`a421f063d`). On level 3, the only level with both, the correction changes
+  the point-A displacements and t_arr by at most 0.13% and the front speed by 0.02%.
 - The wall keeps Kratos's BDF2 start from a two-step rest history (see Checks).
 - The first step of level 2 is over the coupling tolerance (see above).
 - The VTK fields (written every 1 ms) and the production `log.txt` files are not included; they are
