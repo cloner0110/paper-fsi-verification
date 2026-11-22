@@ -15,9 +15,11 @@ import math
 import os
 import sys
 
-# solids4foam level-1 values (paper-data/3dtube_level3_findings.md, Sections 6 and 12.6-12.7).
-# The Euler u_z,min and u_r,min were recorded before the two solver fixes of Section 12, which
-# changed u_z on the platform used; only u_r,max was re-checked after the fixes (0.12241 mm).
+# solids4foam values. Euler: old meshes of a421f063d (paper-data/3dtube_level3_findings.md, Sections 6
+# and 12.6-12.7); the Euler u_z,min and u_r,min were recorded before the two solver fixes of Section 12,
+# which changed u_z on the platform used; only u_r,max was re-checked after the fixes (0.12241 mm).
+# Backward: corrected meshes (full-precision wall arcs), from Philip on #92 (21 Nov 2026) and
+# paper-data/3dtube_level3_corrected_ecore/; c_p from unshifted axis probes.
 S4F = {
     "Euler L1, dt 1e-4 (after the fixes; only u_r,max re-checked)": {"ur_max_A_m": 0.12241e-3},
     "Euler L1, dt 1e-4 (before the fixes, Section 6)": {
@@ -26,12 +28,15 @@ S4F = {
     "Euler L2, dt 1e-4 (before the fixes)": {
         "ur_max_A_m": 0.12107e-3, "t_ur_max_A_s": 7.037e-3, "uz_min_A_m": -0.07515e-3,
         "ur_min_late_A_m": -0.07611e-3},
-    "Backward L1, dt 2.5e-5 (after the fixes)": {
-        "ur_max_A_m": 0.15978e-3, "uz_min_A_m": -0.08819e-3, "t_arrival_A_s": 5.873e-3,
-        "wave_speed_pressure_m_s": 4.654},
-    "Backward L3, dt 6.25e-6 (after the fixes)": {
-        "ur_max_A_m": 0.15851e-3, "t_ur_max_A_s": 7.252e-3, "uz_min_A_m": -0.08571e-3,
-        "t_arrival_A_s": 5.825e-3, "wave_speed_pressure_m_s": 4.594},
+    "Backward L1, dt 2.5e-5 (corrected meshes)": {
+        "ur_max_A_m": 0.15958e-3, "uz_min_A_m": -0.08817e-3, "t_arrival_A_s": 5.872e-3,
+        "wave_speed_pressure_m_s": 4.664},
+    "Backward L2, dt 1.25e-5 (corrected meshes)": {
+        "ur_max_A_m": 0.15924e-3, "uz_min_A_m": -0.08657e-3, "t_arrival_A_s": 5.841e-3,
+        "wave_speed_pressure_m_s": 4.651},
+    "Backward L3, dt 6.25e-6 (corrected meshes)": {
+        "ur_max_A_m": 0.15831e-3, "t_ur_max_A_s": 7.251e-3, "uz_min_A_m": -0.08570e-3,
+        "t_arrival_A_s": 5.823e-3, "wave_speed_pressure_m_s": 4.625},
 }
 QOIS = [("ur_max_A_m", "u_r,max(A)", 1e3, "mm"), ("t_ur_max_A_s", "t(u_r,max)", 1e3, "ms"),
         ("uz_min_A_m", "u_z,min(A)", 1e3, "mm"), ("ur_min_late_A_m", "u_r,min(A), t > 14 ms", 1e3, "mm"),

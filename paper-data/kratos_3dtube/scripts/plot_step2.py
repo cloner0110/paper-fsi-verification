@@ -65,7 +65,7 @@ def main():
     k = [float(r["ur_kratos_m"]) * 1e3 for r in rows]
     s = [float(r["ur_s4f_m"]) * 1e3 for r in rows]
     a3.plot(t, k, color=ORANGE, linestyle=(0, (4, 2)), linewidth=1.6, label="Kratos BDF2, level 1")
-    a3.plot(t, s, color=INK2, linestyle="-", linewidth=1.4, label="solids4foam backward, level 1")
+    a3.plot(t, s, color=INK2, linestyle="-", linewidth=1.4, label="solids4foam backward, level 1\n(old mesh)")
     style(a3)
     a3.set_xlim(3, 8)
     a3.set_ylim(0, 0.17)
@@ -73,7 +73,7 @@ def main():
     a3.text(3.1, 0.5 * max(k) + 0.003, "50% of the incident peak", color=INK2, fontsize=8.5)
     a3.set_ylabel("radial displacement at A (mm)")
     a3.set_title("Incident front at A, level 1", loc="left", color=INK, fontsize=10)
-    a3.legend(loc="upper left", frameon=False, fontsize=8.5, labelcolor=INK)
+    a3.legend(loc="upper left",frameon=False, fontsize=8.5, labelcolor=INK)
     fig.legend(*a1.get_legend_handles_labels(), loc="lower center", bbox_to_anchor=(0.37, -0.1), ncol=2,
                frameon=False, fontsize=9, labelcolor=INK)
     fig.tight_layout()

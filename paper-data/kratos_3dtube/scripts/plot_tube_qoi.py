@@ -3,7 +3,8 @@ trough at point A, Kratos against the published Euler solutions and solids4foam.
 (backward) solutions are shown in the u_r,max panel for the size of the Euler damping.
 
 Values from results/level1_euler/summary.md (Kratos), the solids4foam driver's reference JSON
-(Lozovskiy, Eken, Tukovic) and paper-data/3dtube_level3_findings.md (solids4foam).
+(Lozovskiy, Eken, Tukovic), paper-data/3dtube_level3_findings.md (solids4foam Euler, old meshes) and
+paper-data/3dtube_level3_corrected_ecore/ (solids4foam backward level 3, corrected meshes).
 
 Usage: pvpython plot_tube_qoi.py <out.png>
 """
@@ -15,7 +16,7 @@ import matplotlib.pyplot as plt
 
 INK, INK2, GRID, BAND, BLUE = "#1f1f1e", "#5f5e5a", "#e4e3df", "#efeeea", "#2a78d6"
 
-ROWS = ["Kratos 10.3.0 (this work)", "solids4foam Euler L1", "Lozovskiy et al. (2019)", "Eken (2016)"]
+ROWS = ["Kratos 10.3.0 (this work)", "solids4foam Euler L1 (old mesh)", "Lozovskiy et al. (2019)", "Eken (2016)"]
 EULER = {  # magnitudes in mm
     "u_r,max(A)": [0.12334, 0.12241, 0.1194, 0.1242],
     "|u_z,min(A)|": [0.07154, 0.07601, 0.0740, 0.0794],
@@ -23,7 +24,7 @@ EULER = {  # magnitudes in mm
 }
 NOTE = {"|u_z,min(A)|": "solids4foam value from before its solver fixes",
         "|u_r,min(A)|, t > 14 ms": "solids4foam value from before its solver fixes"}
-BACKWARD = [("solids4foam backward L3", 0.15851), ("Tuković et al. (2018), backward", 0.15694)]
+BACKWARD = [("solids4foam backward L3", 0.15831),("Tuković et al. (2018), backward", 0.15694)]
 
 
 def main():
